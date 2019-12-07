@@ -1,7 +1,5 @@
 #include "NeuralNetwork.h"
 
-using namespace std;
-
 NeuralNetwork::NeuralNetwork(): NeuralNetwork({1, 1, 1}, 1.0, new Xorshift(), new Sigmoid()) {}
 
 NeuralNetwork::NeuralNetwork(std::vector<int> _topology, double _learningRate, RandomNumberGenerator* _rng, ActivationFunction* _activation) {
