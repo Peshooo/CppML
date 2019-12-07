@@ -1,18 +1,19 @@
-#include <bits/stdc++.h>
-#include "../../cpp_ml/cpp_ml.h"
+#include <iostream>
+#include <fstream>
+#include <vector>
 
-using namespace std;
+#include "../../cpp_ml/cpp_ml.h"
 
 const int BATCH_SIZE = 20;
 
 ActivationFunction* activation = new Sigmoid();
 RandomNumberGenerator* rng = new Xorshift();
 NeuralNetwork net({784, 20, 10}, 1.0, rng, activation);
-vector<Matrix> trainInput, trainOutput;
+std::vector<Matrix> trainInput, trainOutput;
 
-vector<int> split(string s) {
+std::vector<int> split(std::string s) {
   int curr = 0;
-  vector<int> ans;
+  std::vector<int> ans;
 
   for(int i=0;i<(int)(s.size());i++) {
     if(s[i]==',') {
@@ -30,13 +31,13 @@ vector<int> split(string s) {
 }
 
 void timeStamp() {
-  cerr<<"Time: "<<(int)(clock() * 1000.0 / CLOCKS_PER_SEC)<<" ms."<<endl;
+  std::cerr<<"Time: "<<(int)(std::clock() * 1000.0 / CLOCKS_PER_SEC)<<" ms."<<std::endl;
 }
 
 void parseTrainingData() {
-  ifstream IN("train.csv");
+  std::ifstream IN("train.csv");
   Matrix input(1, 784), output(1, 10);
-  string trash;
+  std::string trash;
 
   trainInput.reserve(42000);
   trainOutput.reserve(42000);
@@ -45,7 +46,7 @@ void parseTrainingData() {
   for(int i=0;i<42000;i++) {
     IN>>trash;
 
-    vector<int> v = split(trash);
+    std::vector<int> v = split(trash);
 
     output.zero();
     output[0][v[0]] = 1.0;
@@ -58,20 +59,20 @@ void parseTrainingData() {
     trainOutput.push_back(output);
   }
 
-  cerr<<"Training data loaded!"<<endl;
+  std::cerr<<"Training data loaded!"<<std::endl;
   timeStamp();
 }
 
-void randomShuffle(vector<int> &v, RandomNumberGenerator* rng) {
+void randomShuffle(std::vector<int> &v, RandomNumberGenerator* rng) {
   for(int i=(int)(v.size()) - 1;i>=0;i--) {
-    swap(v[i], v[rng->next() % (i + 1)]);
+    std::swap(v[i], v[rng->next() % (i + 1)]);
   }
 }
 
 void train() {
-  vector<int> idx;
-  vector<Matrix> inputs;
-  vector<Matrix> outputs;
+  std::vector<int> idx;
+  std::vector<Matrix> inputs;
+  std::vector<Matrix> outputs;
   Matrix currOutput;
 
   for(int i=0;i<42000;i++) {
@@ -79,7 +80,7 @@ void train() {
   }
 
   for(int epoch=1;epoch<=1;epoch++) {
-    cerr<<"Epoch "<<epoch<<" starting."<<endl;
+    std::cerr<<"Epoch "<<epoch<<" starting."<<std::endl;
 
     double error = 0.0;
 
@@ -108,26 +109,26 @@ void train() {
     error /= 10.0;
     error /= 42000.0;
 
-    cerr<<"Epoch "<<epoch<<" finished."<<endl;
-    cerr<<"Error: "<<error<<endl;
+    std::cerr<<"Epoch "<<epoch<<" finished."<<std::endl;
+    std::cerr<<"Error: "<<error<<std::endl;
     timeStamp();
 
-    cerr<<endl;
+    std::cerr<<std::endl;
   }
 }
 
 void test() {
-  ifstream IN("test.csv");
-  ofstream OUT("ans.csv");
-  string trash;
+  std::ifstream IN("test.csv");
+  std::ofstream OUT("ans.csv");
+  std::string trash;
   Matrix input(1, 784), output;
 
-  OUT<<"ImageId,Label"<<endl;
+  OUT<<"ImageId,Label"<<std::endl;
 
   IN>>trash;
   for(int i=0;i<28000;i++) {
     IN>>trash;
-    vector<int> v = split(trash);
+    std::vector<int> v = split(trash);
 
     for(int j=0;j<784;j++) {
       input[0][j] = v[j] / 255.0;
@@ -144,7 +145,7 @@ void test() {
       }
     }
 
-    OUT<<i + 1<<","<<which<<endl;
+    OUT<<i + 1<<","<<which<<std::endl;
   }
 
   OUT.close();
