@@ -59,7 +59,8 @@ void parseTrainingData() {
     trainOutput.push_back(output);
   }
 
-  std::cerr<<"Training data loaded!"<<std::endl;
+  log("Training data parsed!");
+
   timeStamp();
 }
 
