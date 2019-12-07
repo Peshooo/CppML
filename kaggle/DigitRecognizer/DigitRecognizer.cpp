@@ -78,7 +78,7 @@ void train() {
     idx.push_back(i);
   }
 
-  for(int epoch=1;epoch<=10;epoch++) {
+  for(int epoch=1;epoch<=1;epoch++) {
     cerr<<"Epoch "<<epoch<<" starting."<<endl;
 
     double error = 0.0;
@@ -117,8 +117,8 @@ void train() {
 }
 
 void test() {
-  ifstream IN("train.csv");
-  ofstream OUT("ans2.csv");
+  ifstream IN("test.csv");
+  ofstream OUT("ans.csv");
   string trash;
   Matrix input(1, 784), output;
 
