@@ -6,5 +6,6 @@
 #include "Xorshift.cpp"
 #include "Matrix.cpp"
 #include "NeuralNetwork.cpp"
+#include "Logger.cpp"
 
 #endif
