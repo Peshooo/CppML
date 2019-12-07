@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include "../../cpp_ml/NeuralNetwork.h"
+#include "../../cpp_ml/cpp_ml.h"
 
 using namespace std;
 
