@@ -1,8 +1,8 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
-#include "Sigmoid.h"
-#include "Xorshift.h"
+#include "ActivationFunction.h"
+#include "RandomNumberGenerator.h"
 
 class Matrix {
   int rows, cols;

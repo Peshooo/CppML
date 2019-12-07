@@ -1,7 +1,4 @@
-#include <bits/stdc++.h>
 #include "Matrix.h"
-
-using namespace std;
 
 Matrix::Matrix(): rows(0), cols(0), a(nullptr) {}
 

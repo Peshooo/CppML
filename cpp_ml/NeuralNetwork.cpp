@@ -1,11 +1,10 @@
 #include "NeuralNetwork.h"
-#include <bits/stdc++.h>
 
 using namespace std;
 
 NeuralNetwork::NeuralNetwork(): NeuralNetwork({1, 1, 1}, 1.0, new Xorshift(), new Sigmoid()) {}
 
-NeuralNetwork::NeuralNetwork(vector<int> _topology, double _learningRate, RandomNumberGenerator* _rng, ActivationFunction* _activation) {
+NeuralNetwork::NeuralNetwork(std::vector<int> _topology, double _learningRate, RandomNumberGenerator* _rng, ActivationFunction* _activation) {
   topology = _topology;
   layersCount = topology.size();
   learningRate = _learningRate;
@@ -38,7 +37,7 @@ Matrix NeuralNetwork::feedForward(Matrix input) {
 }
 
 void NeuralNetwork::backPropagation(Matrix input, Matrix output) {
-  vector<Matrix> layers;
+  std::vector<Matrix> layers;
   Matrix delta;
   
   layers.push_back(input);
@@ -62,7 +61,7 @@ void NeuralNetwork::backPropagation(Matrix input, Matrix output) {
   }
 }
 
-void NeuralNetwork::train(vector<Matrix> inputs, vector<Matrix> outputs) {
+void NeuralNetwork::train(std::vector<Matrix> inputs, std::vector<Matrix> outputs) {
   for(int i=0;i<layersCount - 1;i++) {
     deltaWeight[i].zero();
     deltaBias[i].zero();
