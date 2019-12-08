@@ -4,11 +4,67 @@
 #include <fstream>
 #include <sstream>
 
+Logger::Loggable::Loggable() {
+  stream = std::stringstream();
+}
+
+Logger::Loggable::Loggable(bool b) {
+  stream = std::stringstream();
+
+  if(b==false) {
+    stream<<"false";
+  } else {
+    stream<<"true";
+  }
+}
+
+template<class T> Logger::Loggable::Loggable(T t) {
+  stream = std::stringstream();
+
+  stream<<t;
+}
+
+template<class T> Logger::Loggable::Loggable(std::vector<T> v) {
+  stream = std::stringstream();
+  bool first = true;
+
+  stream<<"{";
+
+  for(T curr: v) {
+    if(!first) {
+      stream<<", ";
+    } else {
+      first = false;
+    }
+
+    *this += curr;
+  }
+
+  stream<<"}";
+}
+
+Logger::Loggable::Loggable(const Loggable& x) {
+  stream = std::stringstream(x.getValue());
+}
+
+void Logger::Loggable::operator =(const Loggable& x) {
+  stream = std::stringstream(x.getValue());
+}
+
+Logger::Loggable& Logger::Loggable::operator +=(const Loggable& x) {
+  stream<<x.getValue();
+  return *this;
+}
+
+std::string Logger::Loggable::getValue() const {
+  return stream.str();
+}
+
 Logger::Logger() {
   std::stringstream filename;
 
   filename<<"logs_"<<std::time(0)<<".logfile";
-  
+
   logfile = filename.str();
 }
 
@@ -17,67 +73,14 @@ Logger& Logger::getLogger() {
   return logger;
 }
 
-void Logger::logTimestamp() {
+void Logger::logTimestamp(bool replicateToCerr) {
   std::ofstream out(logfile.c_str(), std::ios_base::app);
-  
-  out<<"[ Time: "<<time(0)<<" ]"<<"   ";
-}
 
-template<class T> void Logger::log(T item, bool topLevel) {
-  std::ofstream out(logfile.c_str(), std::ios_base::app);
-  
-  if(topLevel) {
-    logTimestamp();
-  }
+  unsigned long long elapsedTime = (unsigned long long) (1000.0 * (clock() - startingTime) / CLOCKS_PER_SEC);
 
-  out<<item;
-  
-  
-  if(topLevel) {
-    out<<std::endl;
-  }
-}
-
-void Logger::log(bool item, bool topLevel) {
-  std::ofstream out(logfile.c_str(), std::ios_base::app);
-  
-  if(topLevel) {
-    logTimestamp();
-  }
-
-  if(item==false) {
-    out<<"false";
-  } else {
-    out<<"true";
-  }
-
-  if(topLevel) {
-    out<<std::endl;
-  }
-}
-
-template<class T> void Logger::log(std::vector<T> item, bool topLevel) {
-  std::ofstream out(logfile.c_str(), std::ios_base::app);
-  
-  if(topLevel) {
-    logTimestamp();
-  }
-
-  bool firstItem = true;
-  out<<"{";
-  for(T currentItem: item) {
-    if(!firstItem) {
-      out<<", ";
-    } else {
-      firstItem = false;
-    }
-
-    log(currentItem, false);
-  }
-  out<<"}";
-
-  if(topLevel) {
-    out<<std::endl;
+  out<<"[ Time: "<<elapsedTime<<" ms ]"<<" ";
+  if(replicateToCerr) {
+    std::cerr<<"[ Time: "<<elapsedTime<<" ms ]"<<" ";
   }
 }
 
@@ -85,6 +88,29 @@ std::string Logger::getLogfile() {
   return logfile;
 }
 
-template<class T> void log(T t) {
-  Logger::getLogger().log(t);
+void Logger::log(Loggable item, bool replicateToCerr) {
+  std::ofstream out(logfile.c_str(), std::ios_base::app);
+  
+  logTimestamp(replicateToCerr);
+
+  out<<item.getValue();
+  out<<std::endl;
+  if(replicateToCerr) {
+    std::cerr<<item.getValue();
+    std::cerr<<std::endl;
+  }
+}
+
+void logMessage(std::vector<Logger::Loggable> items, bool replicateToCerr) {
+  Logger::Loggable item;
+
+  for(Logger::Loggable currentItem: items) {
+    item += currentItem;
+  }
+
+  Logger::getLogger().log(Logger::Loggable(item), replicateToCerr);
+}
+
+void logMessage(std::vector<Logger::Loggable> items) {
+  logMessage(items, true);
 }

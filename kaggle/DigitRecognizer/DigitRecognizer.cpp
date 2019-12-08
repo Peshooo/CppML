@@ -30,10 +30,6 @@ std::vector<int> split(std::string s) {
   return ans;
 }
 
-void timeStamp() {
-  std::cerr<<"Time: "<<(int)(std::clock() * 1000.0 / CLOCKS_PER_SEC)<<" ms."<<std::endl;
-}
-
 void parseTrainingData() {
   std::ifstream IN("train.csv");
   Matrix input(1, 784), output(1, 10);
@@ -59,9 +55,7 @@ void parseTrainingData() {
     trainOutput.push_back(output);
   }
 
-  log("Training data parsed!");
-
-  timeStamp();
+  logMessage({"Training data parsed."});
 }
 
 void randomShuffle(std::vector<int> &v, RandomNumberGenerator* rng) {
@@ -81,7 +75,7 @@ void train() {
   }
 
   for(int epoch=1;epoch<=1;epoch++) {
-    std::cerr<<"Epoch "<<epoch<<" starting."<<std::endl;
+    logMessage({"Epoch ", epoch, " starting."});
 
     double error = 0.0;
 
@@ -110,11 +104,9 @@ void train() {
     error /= 10.0;
     error /= 42000.0;
 
-    std::cerr<<"Epoch "<<epoch<<" finished."<<std::endl;
-    std::cerr<<"Error: "<<error<<std::endl;
-    timeStamp();
-
-    std::cerr<<std::endl;
+    logMessage({"Epoch ", epoch, " finished."});
+    logMessage({"Error: ", error});
+    logMessage({""});
   }
 }
 
