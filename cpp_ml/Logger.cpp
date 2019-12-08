@@ -43,6 +43,27 @@ template<class T> Logger::Loggable::Loggable(std::vector<T> v) {
   stream<<"}";
 }
 
+Logger::Loggable::Loggable(Matrix x) {
+  stream = std::stringstream();
+
+  stream<<"Matrix"<<std::endl;
+  stream<<"Rows = "<<x.getRows()<<std::endl;
+  stream<<"Cols = "<<x.getCols()<<std::endl;
+  stream<<"{"<<std::endl;
+  for(int i=0;i<x.getRows();i++) {
+    stream<<" {";
+    for(int j=0;j<x.getCols();j++) {
+      if(j>0) {
+        stream<<", ";
+      }
+
+      stream<<x[i][j];
+    }
+    stream<<"}"<<std::endl;
+  }
+  stream<<"}"<<std::endl;
+}
+
 Logger::Loggable::Loggable(const Loggable& x) {
   stream = std::stringstream(x.getValue());
 }
@@ -78,9 +99,9 @@ void Logger::logTimestamp(bool replicateToCerr) {
 
   unsigned long long elapsedTime = (unsigned long long) (1000.0 * (clock() - startingTime) / CLOCKS_PER_SEC);
 
-  out<<"[ Time: "<<elapsedTime<<" ms ]"<<" ";
+  out<<"[Time: "<<elapsedTime<<" ms]"<<" ";
   if(replicateToCerr) {
-    std::cerr<<"[ Time: "<<elapsedTime<<" ms ]"<<" ";
+    std::cerr<<"[Time: "<<elapsedTime<<" ms]"<<" ";
   }
 }
 
