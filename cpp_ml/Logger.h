@@ -45,5 +45,4 @@ class Logger {
     friend void logMessage(std::vector<Loggable>, bool);
     friend void logMessage(std::vector<Loggable>);
 };
-
 #endif
