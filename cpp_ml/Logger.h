@@ -15,8 +15,8 @@ class Logger {
     public:
       Loggable();
       Loggable(bool);
+      Loggable(Matrix);
       Loggable(const Loggable&);
-      Loggable(char[]);
       template<class T> Loggable(std::vector<T>);
       template<class T> Loggable(T);
 
