@@ -16,6 +16,7 @@ class Logger {
       Loggable();
       Loggable(bool);
       Loggable(Matrix);
+      Loggable(NeuralNetwork);
       Loggable(const Loggable&);
       template<class T> Loggable(std::vector<T>);
       template<class T> Loggable(T);
