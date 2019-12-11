@@ -85,3 +85,31 @@ void NeuralNetwork::train(std::vector<Matrix> inputs, std::vector<Matrix> output
     }
   }
 }
+
+double NeuralNetwork::getLearningRate() {
+  return learningRate;
+}
+
+int NeuralNetwork::getLayersCount() {
+  return layersCount;
+}
+
+std::vector<int> NeuralNetwork::getTopology() {
+  return topology;
+}
+
+std::vector<Matrix> NeuralNetwork::getWeights() {
+  return weight;
+}
+
+std::vector<Matrix> NeuralNetwork::getBiases() {
+  return bias;
+}
+
+std::vector<Matrix> NeuralNetwork::getDeltaWeights() {
+  return deltaWeight;
+}
+
+std::vector<Matrix> NeuralNetwork::getDeltaBiases() {
+  return deltaBias;
+}

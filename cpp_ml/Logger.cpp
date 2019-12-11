@@ -46,9 +46,9 @@ template<class T> Logger::Loggable::Loggable(std::vector<T> v) {
 Logger::Loggable::Loggable(Matrix x) {
   stream = std::stringstream();
 
-  stream<<"Matrix"<<std::endl;
-  stream<<"Rows = "<<x.getRows()<<std::endl;
-  stream<<"Cols = "<<x.getCols()<<std::endl;
+  stream<<std::endl;
+  stream<<"rows: "<<x.getRows()<<std::endl;
+  stream<<"cols: "<<x.getCols()<<std::endl;
   stream<<"{"<<std::endl;
   for(int i=0;i<x.getRows();i++) {
     stream<<" {";
@@ -62,6 +62,35 @@ Logger::Loggable::Loggable(Matrix x) {
     stream<<"}"<<std::endl;
   }
   stream<<"}"<<std::endl;
+}
+
+Logger::Loggable::Loggable(NeuralNetwork x) {
+  stream = std::stringstream();
+
+  stream<<std::endl;
+  stream<<"Learning rate: "<<x.getLearningRate()<<std::endl;
+  stream<<"Layers count: "<<x.getLayersCount()<<std::endl;
+  stream<<"Topology: ";
+  *this += x.getTopology();
+
+  std::vector<Matrix> weight = x.getWeights();
+  std::vector<Matrix> bias = x.getBiases();
+  std::vector<Matrix> deltaWeight = x.getDeltaWeights();
+  std::vector<Matrix> deltaBias = x.getDeltaBiases();
+
+  stream<<std::endl;
+  for(int i=0;i<x.getLayersCount() - 1;i++) {
+    stream<<std::endl;
+    stream<<"Layer "<<i<<std::endl;
+    stream<<"weights:";
+    *this += weight[i];
+    stream<<"biases:";
+    *this += bias[i];
+    stream<<"delta weights:";
+    *this += deltaWeight[i];
+    stream<<"delta biases:";
+    *this += deltaBias[i];
+  }
 }
 
 Logger::Loggable::Loggable(const Loggable& x) {

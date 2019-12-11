@@ -23,6 +23,14 @@ class NeuralNetwork {
 
     Matrix feedForward(Matrix);
     void train(std::vector<Matrix>, std::vector<Matrix>);
+
+    double getLearningRate();
+    int getLayersCount();
+    std::vector<int> getTopology();
+    std::vector<Matrix> getWeights();
+    std::vector<Matrix> getBiases();
+    std::vector<Matrix> getDeltaWeights();
+    std::vector<Matrix> getDeltaBiases();
 };
 
 #endif
