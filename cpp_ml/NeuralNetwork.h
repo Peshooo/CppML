@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include "Array.h"
 #include "Sigmoid.h"
 #include "Xorshift.h"
 #include "Matrix.h"
@@ -22,7 +23,7 @@ class NeuralNetwork {
     NeuralNetwork(std::vector<int>, double, RandomNumberGenerator*, ActivationFunction*);
 
     Matrix feedForward(Matrix);
-    void train(std::vector<Matrix>, std::vector<Matrix>);
+    void train(Array<Matrix>, Array<Matrix>);
 
     double getLearningRate();
     int getLayersCount();

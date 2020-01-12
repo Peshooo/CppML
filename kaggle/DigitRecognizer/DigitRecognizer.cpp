@@ -9,7 +9,7 @@ const int BATCH_SIZE = 20;
 ActivationFunction* activation = new Sigmoid();
 RandomNumberGenerator* rng = new Xorshift();
 NeuralNetwork net({784, 20, 10}, 1.0, rng, activation);
-std::vector<Matrix> trainInput, trainOutput;
+Array<Matrix> trainInput(42000), trainOutput(42000);
 
 std::vector<int> split(std::string s) {
   int curr = 0;
@@ -35,9 +35,6 @@ void parseTrainingData() {
   Matrix input(1, 784), output(1, 10);
   std::string trash;
 
-  trainInput.reserve(42000);
-  trainOutput.reserve(42000);
-
   IN>>trash;
   for(int i=0;i<42000;i++) {
     IN>>trash;
@@ -51,27 +48,27 @@ void parseTrainingData() {
       input[0][j - 1] = v[j] / 255.0;
     }
 
-    trainInput.push_back(input);
-    trainOutput.push_back(output);
+    trainInput[i] = input;
+    trainOutput[i] = output;
   }
 
   logMessage({"Training data parsed."});
 }
 
-void randomShuffle(std::vector<int> &v, RandomNumberGenerator* rng) {
-  for(int i=(int)(v.size()) - 1;i>=0;i--) {
+void randomShuffle(Array<int> &v, RandomNumberGenerator* rng) {
+  for(int i=(int)(v.getSize()) - 1;i>=0;i--) {
     std::swap(v[i], v[rng->next() % (i + 1)]);
   }
 }
 
 void train() {
-  std::vector<int> idx;
-  std::vector<Matrix> inputs;
-  std::vector<Matrix> outputs;
+  Array<int> idx(42000);
+  Array<Matrix> inputs(BATCH_SIZE);
+  Array<Matrix> outputs(BATCH_SIZE);
   Matrix currOutput;
 
   for(int i=0;i<42000;i++) {
-    idx.push_back(i);
+    idx[i] = i;
   }
 
   for(int epoch=1;epoch<=1;epoch++) {
@@ -82,12 +79,9 @@ void train() {
     randomShuffle(idx, rng);
 
     for(int i=0;i<42000;i+=BATCH_SIZE) {
-      inputs.clear();
-      outputs.clear();
-
       for(int j=0;j<BATCH_SIZE;j++) {
-        inputs.push_back(trainInput[idx[i + j]]);
-        outputs.push_back(trainOutput[idx[i + j]]);
+        inputs[j] = trainInput[idx[i + j]];
+        outputs[j] = trainOutput[idx[i + j]];
       }
 
       net.train(inputs, outputs);
