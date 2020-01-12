@@ -1,6 +1,7 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
+#include "Array.h"
 #include <iostream>
 #include <vector>
 #include <string>
@@ -19,6 +20,7 @@ class Logger {
       Loggable(NeuralNetwork);
       Loggable(const Loggable&);
       template<class T> Loggable(std::vector<T>);
+      template<class T> Loggable(Array<T>);
       template<class T> Loggable(T);
 
       void operator =(const Loggable&);

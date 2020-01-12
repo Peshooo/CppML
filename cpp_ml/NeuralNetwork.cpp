@@ -59,27 +59,27 @@ void NeuralNetwork::backPropagation(Matrix input, Matrix output) {
   }
 }
 
-void NeuralNetwork::train(std::vector<Matrix> inputs, std::vector<Matrix> outputs) {
+void NeuralNetwork::train(Array<Matrix> inputs, Array<Matrix> outputs) {
   for(int i=0;i<layersCount - 1;i++) {
     deltaWeight[i].zero();
     deltaBias[i].zero();
   }
 
-  for(int i=0;i<(int)(inputs.size());i++) {
+  for(int i=0;i<(int)(inputs.getSize());i++) {
     backPropagation(inputs[i], outputs[i]);
   }
 
   for(int i=0;i<layersCount - 1;i++) {
     for(int j=0;j<deltaWeight[i].getRows();j++) {
       for(int z=0;z<deltaWeight[i].getCols();z++) {
-        deltaWeight[i][j][z] /= (double)(inputs.size());
+        deltaWeight[i][j][z] /= (double)(inputs.getSize());
         weight[i][j][z] -= learningRate * deltaWeight[i][j][z];
       }
     }
 
     for(int j=0;j<deltaBias[i].getRows();j++) {
       for(int z=0;z<deltaBias[i].getCols();z++) {
-        deltaBias[i][j][z] /= (double)(inputs.size());
+        deltaBias[i][j][z] /= (double)(inputs.getSize());
         bias[i][j][z] -= learningRate * deltaBias[i][j][z];
       }
     }

@@ -7,5 +7,6 @@
 #include "Matrix.cpp"
 #include "NeuralNetwork.cpp"
 #include "Logger.cpp"
+#include "Array.cpp"
 
 #endif

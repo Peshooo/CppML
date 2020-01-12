@@ -43,6 +43,27 @@ template<class T> Logger::Loggable::Loggable(std::vector<T> v) {
   stream<<"}";
 }
 
+template<class T> Logger::Loggable::Loggable(Array<T> arr) {
+  stream = std::stringstream();
+  bool first = true;
+
+  stream<<"{";
+
+  for(int i=0;i<arr.getSize();i++) {
+    T curr = arr[i];
+
+    if(!first) {
+      stream<<", ";
+    } else {
+      first = false;
+    }
+
+    *this += curr;
+  }
+
+  stream<<"}";
+}
+
 Logger::Loggable::Loggable(Matrix x) {
   stream = std::stringstream();
 
